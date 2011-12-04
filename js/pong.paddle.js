@@ -21,6 +21,17 @@ function(args) {
 
 Paddle.prototype.draw =
 function(ctx) {
+  
+  if(this.goUp){
+    this.position.y-=this.speed;
+    if(this.position.y <= 0)
+      this.position.y = 0;
+  }else if(this.goDown){
+    this.position.y+=this.speed;
+    if(this.position.y + this.height >= ctx.canvas.height)
+      this.position.y = ctx.canvas.height - this.height;
+  }
+
   ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 };
 
@@ -31,16 +42,20 @@ function() {
   document.addEventListener('keydown', function(e){
     
     var keyCode = e.keyCode;
-
     if(keyCode == ctrl.keyUp){
       that.goUp = true;
-      console.log("goUp...");
     }else if(keyCode == ctrl.keyDown){
       that.goDown = true;
-      console.log("goDown...");
-    }else{
-      that.goUp = that.goDown = false;
     }
 
+  });
+
+  document.addEventListener('keyup',function(e){
+    var keyCode = e.keyCode;
+    if(keyCode == ctrl.keyUp){
+      that.goUp = false
+    }else if(keyCode == ctrl.keyDown){
+      that.goDown = false;
+    }
   });
 };
